@@ -9,6 +9,9 @@
     "checkpointManager": {
       "address": "0x86E4Dc95c7FBdBf52e33D563BbDB00823894C287"
     },
+    "rootChainManager": {
+      "address": "0xA0c68C638235ee32657e8f720a23ceC1bFc77C77"
+    },
     "fxERC20": {
       "address": "0xAd87e3b217c66B0D45dEaFBC540330d300811b94"
     },
@@ -28,6 +31,9 @@
     },
     "checkpointManager": {
       "address": "0x2890bA17EfE978480615e330ecB65333b880928e"
+    },
+    "rootChainManager": {
+      "address": "0xBbD7cBFA79faee899Eaf900F13C9065bF03B1A74"
     },
     "fxERC20": {
       "address": "0xDDE69724AeFBdb084413719fE745aB66e3b055C7"
