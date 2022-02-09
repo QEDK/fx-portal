@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 
 import {ERC20} from "../../lib/ERC20.sol";
 import {Create2} from "../../lib/Create2.sol";
+import {IRootChainManager} from "../../lib/IRootChainManager.sol";
 import {FxBaseRootTunnel} from "../../tunnel/FxBaseRootTunnel.sol";
 import {SafeERC20, IERC20} from "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
@@ -14,6 +15,7 @@ contract FxERC20RootTunnel is FxBaseRootTunnel, Create2 {
     // maybe DEPOSIT and MAP_TOKEN can be reduced to bytes4
     bytes32 public constant DEPOSIT = keccak256("DEPOSIT");
     bytes32 public constant MAP_TOKEN = keccak256("MAP_TOKEN");
+    IRootChainManager public immutable rootChainManager;
 
     event TokenMappedERC20(address indexed rootToken, address indexed childToken);
     event FxWithdrawERC20(
@@ -35,8 +37,10 @@ contract FxERC20RootTunnel is FxBaseRootTunnel, Create2 {
     constructor(
         address _checkpointManager,
         address _fxRoot,
-        address _fxERC20Token
+        address _fxERC20Token,
+        IRootChainManager _rootChainManager
     ) FxBaseRootTunnel(_checkpointManager, _fxRoot) {
+        rootChainManager = _rootChainManager;
         // compute child token template code hash
         childTokenTemplateCodeHash = keccak256(minimalProxyCreationCode(_fxERC20Token));
     }
@@ -48,6 +52,7 @@ contract FxERC20RootTunnel is FxBaseRootTunnel, Create2 {
     function mapToken(address rootToken) public {
         // check if token is already mapped
         require(rootToChildTokens[rootToken] == address(0x0), "FxERC20RootTunnel: ALREADY_MAPPED");
+        require(rootChainManager.rootToChildToken(rootToken) == address(0x0), "FxERC20RootTunnel: MAPPED_ON_POS");
 
         // name, symbol and decimals
         ERC20 rootTokenContract = ERC20(rootToken);
