@@ -15,6 +15,7 @@ contract FxERC20RootTunnel is FxBaseRootTunnel, Create2 {
     // maybe DEPOSIT and MAP_TOKEN can be reduced to bytes4
     bytes32 public constant DEPOSIT = keccak256("DEPOSIT");
     bytes32 public constant MAP_TOKEN = keccak256("MAP_TOKEN");
+    bytes32 public immutable childTokenTemplateCodeHash;
     IRootChainManager public immutable rootChainManager;
 
     event TokenMappedERC20(address indexed rootToken, address indexed childToken);
@@ -32,7 +33,6 @@ contract FxERC20RootTunnel is FxBaseRootTunnel, Create2 {
     );
 
     mapping(address => address) public rootToChildTokens;
-    bytes32 public childTokenTemplateCodeHash;
 
     constructor(
         address _checkpointManager,
