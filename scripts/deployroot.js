@@ -16,6 +16,7 @@ async function main() {
     // Ethereum Mainnet
     fxRoot = config.mainnet.fxRoot.address;
     checkpointManager = config.mainnet.checkpointManager.address;
+    rootChainManager = config.testnet.rootChainManager.address;
     fxERC20 = config.mainnet.fxERC20.address;
     fxERC721 = config.mainnet.fxERC721.address;
     fxERC1155 = config.mainnet.fxERC1155.address;
@@ -23,12 +24,14 @@ async function main() {
     // Goerli Testnet
     fxRoot = config.testnet.fxRoot.address;
     checkpointManager = config.testnet.checkpointManager.address;
+    rootChainManager = config.testnet.rootChainManager.address;
     fxERC20 = config.testnet.fxERC20.address;
     fxERC721 = config.testnet.fxERC721.address;
     fxERC1155 = config.testnet.fxERC1155.address;
   } else {
     fxRoot = process.env.FX_ROOT;
     checkpointManager = process.env.CHECKPOINT_MANAGER;
+    rootChainManager = process.env.ROOTCHAIN_MANAGER;
     fxERC20 = process.env.FX_ERC20;
     fxERC721 = process.env.FX_ERC721;
     fxERC1155 = process.env.FX_ERC1155;
@@ -36,7 +39,7 @@ async function main() {
 
   // You will want to use your own tunnel addresses here instead!
   const ERC20 = await hre.ethers.getContractFactory("FxERC20RootTunnel");
-  const erc20 = await ERC20.deploy(checkpointManager, fxRoot, fxERC20);
+  const erc20 = await ERC20.deploy(checkpointManager, fxRoot, fxERC20, rootChainManager);
   console.log(erc20.deployTransaction);
   await erc20.deployTransaction.wait();
   console.log("ERC20RootTunnel deployed to:", erc20.address);
